@@ -14,12 +14,12 @@ export async function fetchRevenue() {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
-    // console.log('Fetching revenue data...');
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log('Fetching revenue data...');
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
-    // console.log('Data fetch completed after 3 seconds.');
+    console.log('Data fetch completed after 3 seconds.');
 
     return data.rows;
   } catch (error) {
@@ -214,4 +214,21 @@ export async function fetchFilteredCustomers(query: string) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
   }
+}
+export async function InvoiceCountPromise(){
+  const invoiceCountPromise = await sql`SELECT COUNT(*) FROM invoices`;
+  return invoiceCountPromise.rows[0].count; 
+}
+export async function InvoiceCountPromisePaid(){
+  const invoiceCountPromise = await sql`SELECT COUNT(*) FROM invoices WHERE status = 'paid'`;
+  return invoiceCountPromise.rows[0].count; 
+}
+export async function InvoiceCountPromisePending(){
+  const invoiceCountPromise = await sql`SELECT COUNT(*) FROM invoices WHERE status = 'pending'`;
+  return invoiceCountPromise.rows[0].count; 
+}
+export async function CustomerCountPromise(){
+  const customerCountPromise = await sql`SELECT COUNT(*) FROM customers`;
+
+  return customerCountPromise.rows[0].count; 
 }
